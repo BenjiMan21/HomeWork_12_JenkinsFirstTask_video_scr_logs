@@ -1,6 +1,7 @@
 package com.nikiforov;
 
 import com.codeborne.selenide.Configuration;
+import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.logevents.SelenideLogger;
 import helpers.Attach;
 import io.qameta.allure.Owner;
@@ -52,7 +53,12 @@ public class JenkinsDemoqaTest {
 
         step("Открываем раздел automation-practice-form", ()-> {
             open("/automation-practice-form");
-            $(".fc-button-label").shouldHave(text("Consent")).click();
+
+            SelenideElement bannerRoot = $(".fc-consent-root");
+            if (bannerRoot.isDisplayed()) {
+                bannerRoot.$(byText("Consent")).click();
+            }
+
             executeJavaScript("$('#fixedban').remove()");
             executeJavaScript("$('footer').remove()");
         });
